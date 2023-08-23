@@ -1,0 +1,14 @@
+array(1) { 
+    ["profil"]=> array(10) 
+    { ["profil_id"]=> string(1) "1" 
+        
+        ["ket_umum"]=> string(214) "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit, maiores provident rem natus laborum ab, facilis adipisci veniam sint, similique facere commodi sit molestias cum sequi accusamus! Ad, expedita eveniet." 
+            ["sejarah"]=> string(0) "" 
+            ["visi_misi"]=> string(214) "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit, maiores provident rem natus laborum ab, facilis adipisci veniam sint, similique facere commodi sit molestias cum sequi accusamus! Ad, expedita eveniet." 
+            
+            ["struktur"]=> string(214) "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit, maiores provident rem natus laborum ab, facilis adipisci veniam sint, similique facere commodi sit molestias cum sequi accusamus! Ad, expedita eveniet." 
+                ["proker"]=> string(214) "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit, maiores provident rem natus laborum ab, facilis adipisci veniam sint, similique facere commodi sit molestias cum sequi accusamus! Ad, expedita eveniet." 
+                ["cabang"]=> string(214) "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit, maiores provident rem natus laborum ab, facilis adipisci veniam sint, similique facere commodi sit molestias cum sequi accusamus! Ad, expedita eveniet." 
+                ["nama_aspenku"]=> string(51) "Asosiasi Pengusaha Kue dan Kuliner Sumatera Selatan" 
+                ["singkatan_asosiasi"]=> string(0) "" 
+                ["alamat_aspenku"]=> string(214) "Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit, maiores provident rem natus laborum ab, facilis adipisci veniam sint, similique facere commodi sit molestias cum sequi accusamus! Ad, expedita eveniet." } }
