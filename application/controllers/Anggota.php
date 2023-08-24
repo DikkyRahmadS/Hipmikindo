@@ -185,6 +185,7 @@ class Anggota extends CI_Controller
   public function tambahanggota()
   {
     $result['profillama'] = $this->all_model->get_profil();
+		$result['kabupaten'] = $this->all_model->tampil_data_kabupaten();
     $this->load->view('tambah_anggota', $result);
   }
   public function simpandatatambahanggota()
@@ -194,6 +195,7 @@ class Anggota extends CI_Controller
     $this->form_validation->set_rules('email_umkm', 'Email UMKM', 'required|trim');
     $this->form_validation->set_rules('alamat_umkm', 'Alamat UMKM', 'required|trim');
     $this->form_validation->set_rules('nowa', 'No Wa UMKM', 'required|trim');
+		$this->form_validation->set_rules('kabupaten_id', 'Nama Kabupaten', 'required|trim');
     $this->form_validation->set_rules('username_ig', 'Instagram UMKM', 'required|trim');
     $this->form_validation->set_rules(
       'logo_umkm',
@@ -261,6 +263,7 @@ class Anggota extends CI_Controller
                 'email_umkm' => $this->input->post('email_umkm'),
                 'alamat_umkm' => $this->input->post('alamat_umkm'),
                 'nowa' => $this->input->post('nowa'),
+								'kabupaten_id' => $this->input->post('kabupaten_id'),
                 'username_ig' => $this->input->post('username_ig'),
                 'logo_umkm'      => $logo_umkm,
                 'list_menu'      => $list_menu,
