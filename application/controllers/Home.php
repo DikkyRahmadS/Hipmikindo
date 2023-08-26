@@ -390,20 +390,33 @@ class Home extends CI_Controller
 			$result['profillama'] = $this->all_model->get_profil();
 			$this->load->view('daftarakun', $result);
 		} else {
+			$email = $this->input->post('email', true);
 			$data = [
 				'nama_lengkap' => htmlspecialchars($this->input->post('nama_lengkap', true)),
-				'email' => htmlspecialchars($this->input->post('email', true)),
+				'email' => htmlspecialchars($email),
 				'dpc' => htmlspecialchars($this->input->post('dpc', true)),
 				'username' => htmlspecialchars($this->input->post('username', true)),
 				'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
 				'level' => 1,
-				'is_active' => 1, // Set 'is_active' to 1 to indicate an active account
+				'is_active' => 0, // Set 'is_active' to 1 to indicate an active account
 				'date_created' => time()
 			];
 
-			$user_id = $this->All_model->insert_user($data);
+			//$user_id = $this->All_model->insert_user($data);
 
-			$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Congratulations! Your account has been created and activated.</div>');
+			$token = base64_encode(random_bytes(32));
+			$user_token = [
+				'email' => $email,
+				'token' => $token,
+				'date_created' => time()
+			];
+
+			$this->db->insert('user', $data);
+			$this->db->insert('user_token', $user_token);
+
+			$this->_sendEmail($token, 'verify',$email);
+
+			$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Congratulation! your account has been created.Please check your email to activate your account</div>');
 			redirect('login');
 		}
 	}
@@ -413,7 +426,22 @@ class Home extends CI_Controller
 		// Load email library (already loaded in the constructor)
 		// $this->load->library('email');
 
-		$this->email->clear();
+		$config = [
+			'protocol'  => 'smtp',
+			'smtp_host' => 'ssl://smtp.googlemail.com',
+			'smtp_user' => 'dikkyrahmads@gmail.com',
+			'smtp_pass' => 'hgfymalhzbcbgyvy',
+			'smtp_port' => 465,
+			'mailtype'  => 'html',
+			'charset'   => 'utf-8',
+			'newline'   => "\r\n"
+		];
+
+		$this->email->initialize($config);
+
+		$this->email->from('dikkyrahmads@gmail.com', 'Admin Hipmikindo');
+		$this->email->to($email);
+
 
 		// Your email configuration remains unchanged
 
@@ -478,7 +506,7 @@ class Home extends CI_Controller
 
 			if ($user_token) {
 				// Check if token has expired (e.g., within 24 hours)
-				if (time() - $user_token['date_created'] < 86400) {
+				if (time() - $user_token[0]->date_created < 86400) {
 					$this->session->set_userdata('reset_email', $email);
 					$this->changePassword();
 				} else {
@@ -523,6 +551,59 @@ class Home extends CI_Controller
 			redirect('login');
 		}
 	}
+
+	public function verify()
+	{
+		$email = $this->input->get('email');
+		$token = $this->input->get('token');
+
+		$user = $this->All_model->get_user_by_email($email);
+
+		if ($user) {
+			$user_token = $this->All_model->get_user_token($email, $token);
+
+			if ($user_token) {
+				// Check if token has expired (e.g., within 24 hours)
+				if (time() - $user_token[0]->date_created < 86400) {
+					$this->session->set_userdata('aktifakun', $email);
+					$this->accountVerified();
+				} else {
+					$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Account Verification failed! Token has expired.</div>');
+					redirect('login');
+				}
+			} else {
+				$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Account Verification failed! Wrong token.</div>');
+				redirect('login');
+			}
+		} else {
+			$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Account Verification failed! Wrong email.</div>');
+			redirect('login');
+		}
+	}
+
+	public function accountVerified()
+	{
+		if (!$this->session->userdata('aktifakun')) {
+			redirect('login');
+		}
+			$result['profillama'] = $this->all_model->get_profil();
+			$this->load->view('login', $result);
+		
+			$email = $this->session->userdata('aktifakun');
+
+			$this->db->set('is_active', 1);
+			$this->db->where('email', $email);
+			$this->db->update('user');
+
+			$this->session->unset_userdata('aktifakun');
+
+			$this->db->delete('user_token', ['email' => $email]);
+
+			$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Account Verification success! Please login.</div>');
+			redirect('login');
+		
+	}
+
 	public function logout()
 	{
 		$this->session->unset_userdata('user_session');

@@ -28,7 +28,7 @@
 							<div class="col-lg">
 								<div class="checkout__input">
 									<div class="d-flex mb-2">
-										<div class="text-sm mr-2">DPC |</div>
+										<div class="text-sm mr-2">Domisili |</div>
 										<div class="badge badge-dark p-2"><?php echo userdata()->dpc ?></div>
 									</div>
 								</div>

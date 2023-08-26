@@ -34,6 +34,7 @@ class anggota_model extends CI_Model
   
       // Menggunakan variabel $where
       $this->db->where($where);
+			$this->db->where('anggota.status =',2);
   
       $this->db->order_by('anggota.anggota_id', 'DESC');
       $this->db->limit($limit, $start);

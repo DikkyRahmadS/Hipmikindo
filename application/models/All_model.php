@@ -128,6 +128,14 @@ public function getKabupaten() {
         return $query->result();
     }
 
+	public function get_user_token($email,$token)
+	{
+		$this->db->where('email', $email);
+		$this->db->where('token', $token);
+		$query = $this->db->get('user_token');
+		return $query->result();
+	}
+
   function display_records()
   {
     $query = $this->db->order_by('kuliner_id', 'DESC')->get("kuliner");
