@@ -14,5 +14,5 @@ dan lain-lain.
 - Customer
 
 ## Tools
-- PHP version 8
+- PHP version 7.3
 - Codeigniter 3
